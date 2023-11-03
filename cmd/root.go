@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sigs.k8s.io/kustomize/kyaml/kio"
+	"strings"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -34,7 +35,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		for _, node := range firstFile {
-			OverWriteToFile(fmt.Sprintf("%s/%s-%s.yaml", args[1], node.GetKind(), node.GetName()), node.MustString())
+			OverWriteToFile(fmt.Sprintf("%s/%s-%s.yaml", args[1], strings.ToLower(node.GetKind()), strings.ToLower(node.GetName())), node.MustString())
 		}
 
 	},
