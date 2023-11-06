@@ -15,7 +15,6 @@ var rootCmd = &cobra.Command{
 	Short: "this command will transform a list of yaml documents into individual documents",
 	Args:  cobra.MatchAll(cobra.ExactArgs(2), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("YamlSplitCmd")
 
 		fName := args[0]
 
@@ -35,7 +34,15 @@ var rootCmd = &cobra.Command{
 		}
 
 		for _, node := range firstFile {
-			OverWriteToFile(fmt.Sprintf("%s/%s-%s.yaml", args[1], strings.ToLower(node.GetKind()), strings.ToLower(node.GetName())), node.MustString())
+
+			fileName := fmt.Sprintf("%s-%s.yaml", strings.ToLower(node.GetKind()), strings.ToLower(node.GetName()))
+
+			fileName := strings.Replace(fileName, ":", "-", -1)
+
+			fmt.Printf("processing: %s\n", fileName)
+
+			pkg.OverWriteToFile(fmt.Sprintf("%s/%s", args[1], fileName), node.MustString())
+			
 		}
 
 	},
