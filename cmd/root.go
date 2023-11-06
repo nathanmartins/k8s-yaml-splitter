@@ -36,13 +36,12 @@ var rootCmd = &cobra.Command{
 		for _, node := range firstFile {
 
 			fileName := fmt.Sprintf("%s-%s.yaml", strings.ToLower(node.GetKind()), strings.ToLower(node.GetName()))
-
-			fileName := strings.Replace(fileName, ":", "-", -1)
+			fileName = strings.Replace(fileName, ":", "-", -1)
 
 			fmt.Printf("processing: %s\n", fileName)
 
-			pkg.OverWriteToFile(fmt.Sprintf("%s/%s", args[1], fileName), node.MustString())
-			
+			OverWriteToFile(fmt.Sprintf("%s/%s", args[1], fileName), node.MustString())
+
 		}
 
 	},
