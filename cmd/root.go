@@ -11,16 +11,23 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "k8s-yaml-splitter",
+	Use:   "yaml-split",
 	Short: "this command will transform a list of yaml documents into individual documents",
-	Args:  cobra.MatchAll(cobra.ExactArgs(2), cobra.OnlyValidArgs),
+	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fName := args[0]
+		var firstFileBytes []byte
+		var err error
 
-		firstFileBytes, err := ReadFileBytes(fName)
+		if len(args) < 2 {
+			firstFileBytes, err = io.ReadAll(os.Stdin)
+		} else {
+			fName := args[0]
+			firstFileBytes, err = pkg.ReadFileBytes(fName)
+		}
+
 		if err != nil {
-			log.Fatalln(err)
+			logger.Fatal(err)
 		}
 
 		firstFile, err := kio.FromBytes(firstFileBytes)
@@ -28,7 +35,13 @@ var rootCmd = &cobra.Command{
 			log.Fatalln(err)
 		}
 
-		err = os.MkdirAll(args[1], os.ModePerm)
+		result := args[0]
+
+		if len(args) > 1 {
+			result = args[1]
+		}
+
+		err = os.MkdirAll(result, os.ModePerm)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -36,12 +49,10 @@ var rootCmd = &cobra.Command{
 		for _, node := range firstFile {
 
 			fileName := fmt.Sprintf("%s-%s.yaml", strings.ToLower(node.GetKind()), strings.ToLower(node.GetName()))
-			fileName = strings.Replace(fileName, ":", "-", -1)
 
 			fmt.Printf("processing: %s\n", fileName)
 
-			OverWriteToFile(fmt.Sprintf("%s/%s", args[1], fileName), node.MustString())
-
+			pkg.OverWriteToFile(fmt.Sprintf("%s/%s", result, fileName), node.MustString())
 		}
 
 	},
