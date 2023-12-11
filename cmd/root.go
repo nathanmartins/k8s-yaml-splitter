@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"io"
 	"log"
 	"os"
 	"sigs.k8s.io/kustomize/kyaml/kio"
@@ -23,11 +24,11 @@ var rootCmd = &cobra.Command{
 			firstFileBytes, err = io.ReadAll(os.Stdin)
 		} else {
 			fName := args[0]
-			firstFileBytes, err = pkg.ReadFileBytes(fName)
+			firstFileBytes, err = ReadFileBytes(fName)
 		}
 
 		if err != nil {
-			logger.Fatal(err)
+			log.Fatal(err)
 		}
 
 		firstFile, err := kio.FromBytes(firstFileBytes)
@@ -52,7 +53,7 @@ var rootCmd = &cobra.Command{
 
 			fmt.Printf("processing: %s\n", fileName)
 
-			pkg.OverWriteToFile(fmt.Sprintf("%s/%s", result, fileName), node.MustString())
+			OverWriteToFile(fmt.Sprintf("%s/%s", result, fileName), node.MustString())
 		}
 
 	},
