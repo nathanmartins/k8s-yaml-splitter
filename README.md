@@ -8,6 +8,10 @@ In order to use the `yaml-split` command-line tool, you need to have Go (version
 
 `go install github.com/nathanmartins/k8s-yaml-splitter@latest`
 
+or download the binary over at:
+
+https://github.com/nathanmartins/k8s-yaml-splitter/releases/latest
+
 
 ## Usage 
 
