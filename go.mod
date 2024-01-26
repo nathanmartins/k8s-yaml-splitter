@@ -3,7 +3,7 @@ module github.com/nathanmartins/k8s-yaml-splitter
 go 1.21.3
 
 require (
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	sigs.k8s.io/kustomize/kyaml v0.15.0
 )
 
