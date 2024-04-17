@@ -50,7 +50,7 @@ var rootCmd = &cobra.Command{
 		for _, node := range firstFile {
 
 			fileName := fmt.Sprintf("%s-%s.yaml", strings.ToLower(node.GetKind()), strings.ToLower(node.GetName()))
-
+			fileName = strings.ReplaceAll(fileName, ":", "-")
 			fmt.Printf("processing: %s\n", fileName)
 
 			OverWriteToFile(fmt.Sprintf("%s/%s", result, fileName), node.MustString())
