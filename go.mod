@@ -1,4 +1,4 @@
-module github.com/nathanmartins/k8s-yaml-splitter
+module go.nathanmartins.dev/k8s-yaml-splitter
 
 go 1.21
 
