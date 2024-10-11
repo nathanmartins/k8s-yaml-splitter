@@ -4,7 +4,7 @@ go 1.23
 
 require (
 	github.com/spf13/cobra v1.8.1
-	sigs.k8s.io/kustomize/kyaml v0.18.0
+	sigs.k8s.io/kustomize/kyaml v0.18.1
 )
 
 require (
@@ -15,7 +15,6 @@ require (
 	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
