@@ -4,7 +4,7 @@ go 1.23.5
 
 require (
 	github.com/spf13/cobra v1.9.1
-	sigs.k8s.io/kustomize/kyaml v0.20.0
+	sigs.k8s.io/kustomize/kyaml v0.20.1
 )
 
 require (
