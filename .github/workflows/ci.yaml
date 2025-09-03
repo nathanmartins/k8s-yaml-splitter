@@ -1,13 +1,14 @@
 name: CI
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual trigger
+  workflow_call: # Call from another workflow
   push:
-    branches: [main]
+    branches: [master, main]
     paths:
     - "**.go"
   pull_request:
-    branches: [main]
+    branches: [master, main]
     paths:
     - "**.go"
 
@@ -19,7 +20,7 @@ defaults:
     shell: bash -Eeuo pipefail {0}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -77,6 +78,5 @@ jobs:
       uses: golangci/golangci-lint-action@v8
       with:
         args: "--timeout=2m"
-        skip-pkg-cache: true
-        skip-build-cache: true
+        skip-save-cache: true
         skip-cache: true

@@ -6,6 +6,9 @@ on: # yamllint disable-line rule:truthy
     tags:
     - '**'
 
+permissions:
+  contents: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -16,7 +19,11 @@ defaults:
 
 jobs:
 
+  run-ci:
+    uses: ./.github/workflows/ci.yaml
+
   goreleaser:
+    needs: run-ci
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -38,3 +45,5 @@ jobs:
         distribution: goreleaser
         version: latest
         args: release --clean
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

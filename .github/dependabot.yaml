@@ -9,6 +9,7 @@ updates:
   rebase-strategy: disabled
   labels:
   - dependencies
+  - gha
 
 - package-ecosystem: gomod
   directory: /
@@ -18,3 +19,4 @@ updates:
   rebase-strategy: disabled
   labels:
   - dependencies
+  - golang
