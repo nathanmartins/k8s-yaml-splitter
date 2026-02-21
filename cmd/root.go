@@ -101,7 +101,11 @@ func OverWriteToFile(filePath string, payload string, logger *slog.Logger) {
 	var f *os.File
 
 	// If the file doesn't exist, create it, or append to the file.
-	f, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0600)
+	f, err := os.OpenFile(
+		filePath,
+		os.O_CREATE|os.O_WRONLY|os.O_TRUNC,
+		0600,
+	)
 	if err != nil {
 		logger.Error("error opening file", "err", err)
 		os.Exit(-1)
