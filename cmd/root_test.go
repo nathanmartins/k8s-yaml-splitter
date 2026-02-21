@@ -76,10 +76,10 @@ func TestRootCommand_SplitsFromStdin(t *testing.T) {
 	}
 	// Ensure we restore the original stdin afterward.
 	origStdin := os.Stdin
-	os.Stdin = r
+	os.Stdin = r //nolint:reassign // Required for testing stdin
 	t.Cleanup(func() {
-		os.Stdin = origStdin
-		r.Close() // ignore error in cleanup
+		os.Stdin = origStdin //nolint:reassign // Required for testing stdin
+		r.Close()            // ignore error in cleanup
 	})
 
 	go func() {
@@ -89,8 +89,8 @@ func TestRootCommand_SplitsFromStdin(t *testing.T) {
 
 	// Run the cobra command with one argument (output directory) so it reads from stdin.
 	rootCmd.SetArgs([]string{outDir})
-	if err := rootCmd.Execute(); err != nil {
-		t.Fatalf("rootCmd.Execute error: %v", err)
+	if execErr := rootCmd.Execute(); execErr != nil {
+		t.Fatalf("rootCmd.Execute error: %v", execErr)
 	}
 
 	// Expected files (lowercased kinds and names, ':' replaced with '-').
@@ -100,9 +100,9 @@ func TestRootCommand_SplitsFromStdin(t *testing.T) {
 		filepath.Join(outDir, "ingress-web.yaml"),
 	}
 	for _, fp := range wantFiles {
-		b, err := os.ReadFile(fp)
-		if err != nil {
-			t.Fatalf("expected output file missing: %s: %v", fp, err)
+		b, readErr := os.ReadFile(fp)
+		if readErr != nil {
+			t.Fatalf("expected output file missing: %s: %v", fp, readErr)
 		}
 		// Basic sanity: ensure the file contains a Kind and metadata.name.
 		s := string(b)
@@ -153,9 +153,9 @@ func TestRootCommand_EmptyStdin_NoFiles(t *testing.T) {
 		t.Fatalf("pipe: %v", err)
 	}
 	orig := os.Stdin
-	os.Stdin = r
+	os.Stdin = r //nolint:reassign // Required for testing stdin
 	t.Cleanup(func() {
-		os.Stdin = orig
+		os.Stdin = orig //nolint:reassign // Required for testing stdin
 		r.Close()
 	})
 
@@ -163,8 +163,8 @@ func TestRootCommand_EmptyStdin_NoFiles(t *testing.T) {
 	go func() { _ = w.Close() }()
 
 	rootCmd.SetArgs([]string{outDir})
-	if err := rootCmd.Execute(); err != nil {
-		t.Fatalf("Execute with empty stdin returned error: %v", err)
+	if execErr := rootCmd.Execute(); execErr != nil {
+		t.Fatalf("Execute with empty stdin returned error: %v", execErr)
 	}
 
 	entries, err := os.ReadDir(outDir)
@@ -179,7 +179,7 @@ func TestRootCommand_EmptyStdin_NoFiles(t *testing.T) {
 // Subprocess helper to exercise code paths that call os.Exit.
 // Pattern: parent test runs this test binary with -test.run=TestHelperProcess and
 // GO_WANT_HELPER_PROCESS=1 plus SCENARIO to pick the branch below.
-func TestHelperProcess(t *testing.T) {
+func TestHelperProcess(_ *testing.T) {
 	if os.Getenv("GO_WANT_HELPER_PROCESS") != "1" {
 		return
 	}
