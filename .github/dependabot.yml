@@ -3,21 +3,6 @@
 version: 2
 
 updates:
-  # Gomod dependency updates
-  - package-ecosystem: gomod
-    directory: "/"
-    schedule:
-      interval: weekly
-      day: monday
-    rebase-strategy: disabled
-    groups:
-      gomod-dependencies:
-        patterns:
-          - "*"
-    labels:
-      - dependencies
-      - golang
-
   # Github-Actions dependency updates
   - package-ecosystem: github-actions
     directory: "/"
@@ -32,4 +17,19 @@ updates:
     labels:
       - dependencies
       - gha
+
+  # Gomod dependency updates
+  - package-ecosystem: gomod
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    rebase-strategy: disabled
+    groups:
+      gomod-dependencies:
+        patterns:
+          - "*"
+    labels:
+      - dependencies
+      - golang
 
